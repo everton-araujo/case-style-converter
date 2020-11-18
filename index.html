@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Style Converter</title>
+
+    <style>
+        div {
+            display: inline-block;
+            /* margin: 20px 50px; */
+        }
+
+        /* #camel-case {
+            float: left;
+        }
+
+        #snake-case {
+            float: left;
+        } */
+
+        h1 {
+            text-align: center;
+        }
+
+        Textarea {
+            height: 450px;
+            width: 300px;
+        }
+
+        p {
+            display: inline-block;
+        }
+
+        .button-div {
+            align-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h1>Camel Case</h1>
+        <Textarea id="camel-case"></Textarea>
+    </div>
+
+    <div class="button-div">
+        <p>&lt---</p>
+        <button onClick="getTextAreaValue()">Convert</button>
+        <p>---&gt</p>
+    </div>
+
+    <div>
+        <h1>Snake Case</h1>
+        <Textarea id="snake-case"></Textarea>
+    </div>
+
+    <script>
+        function getTextAreaValue() {
+            const textAreaCamelCaseValue = document.getElementById('camel-case').value;
+            const textAreaSnakeCaseValue = document.getElementById('snake-case').value;
+
+            if (textAreaCamelCaseValue.length == 0 && textAreaSnakeCaseValue == 0) return;
+            if (textAreaCamelCaseValue.length != 0 && textAreaSnakeCaseValue != 0) return;
+
+            if (textAreaSnakeCaseValue) {
+                const removeUnderscores = textAreaSnakeCaseValue.replaceAll('_', ' ');
+
+                const uppercaseFirstLetters = removeUnderscores.replace(/^(.)|\s+(.)/g, c => c.toUpperCase());
+
+                const lowerFirstLetter = uppercaseFirstLetters.charAt(0).toLowerCase() + uppercaseFirstLetters.slice(1);
+
+                document.getElementById('camel-case').value = lowerFirstLetter.replaceAll(' ', '');
+
+                let textareaValue = document.getElementById('camel-case');
+                textareaValue.select();
+                document.execCommand('copy');
+
+                return;
+            }
+
+            const toSnakeCase = textAreaCamelCaseValue.replace(/([A-Z])/g, ' $1').trim().toLowerCase().replaceAll(' ', '_');
+
+            document.getElementById('snake-case').value = toSnakeCase;
+
+            let textareaValue = document.getElementById('snake-case');
+            textareaValue.select();
+            document.execCommand('copy');
+        }
+    </script>
+</body>
+
+</html>
