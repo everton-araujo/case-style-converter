@@ -7,21 +7,12 @@
     <title>Case Style Converter</title>
 
     <style>
-        div {
-            display: inline-block;
-            /* margin: 20px 50px; */
+        /* div {
+            /* display: inline-block; */
         }
-
-        /* #camel-case {
-            float: left;
-        }
-
-        #snake-case {
-            float: left;
-        } */
 
         h1 {
-            text-align: center;
+            /* text-align: center; */
         }
 
         Textarea {
@@ -36,57 +27,62 @@
         .button-div {
             align-content: center;
         }
+
+        */
     </style>
 </head>
 
 <body>
     <div>
-        <h1>Camel Case</h1>
-        <Textarea id="camel-case"></Textarea>
+        <select name="case" id="dropbox" onChange="changeText()">
+            <option value="">Chose a case style</option>
+            <option value="camelCase">Camel Case</option>
+            <option value="snake_case">Snake Case</option>
+        </select>
+        <div>
+            <h1 id="caseTitle"></h1>
+            <p id="copyMessage"></p>
+        </div>
+        <Textarea id="textareaValue"></Textarea>
     </div>
 
     <div class="button-div">
-        <p>&lt---</p>
         <button onClick="getTextAreaValue()">Convert</button>
-        <p>---&gt</p>
-    </div>
-
-    <div>
-        <h1>Snake Case</h1>
-        <Textarea id="snake-case"></Textarea>
     </div>
 
     <script>
         function getTextAreaValue() {
-            const textAreaCamelCaseValue = document.getElementById('camel-case').value;
-            const textAreaSnakeCaseValue = document.getElementById('snake-case').value;
+            const optionSelected = document.getElementById('dropbox').value;
+            const textAreaValue = document.getElementById('textareaValue').value;
 
-            if (textAreaCamelCaseValue.length == 0 && textAreaSnakeCaseValue == 0) return;
-            if (textAreaCamelCaseValue.length != 0 && textAreaSnakeCaseValue != 0) return;
+            if (optionSelected == '') return;
 
-            if (textAreaSnakeCaseValue) {
-                const removeUnderscores = textAreaSnakeCaseValue.replaceAll('_', ' ');
+            if (optionSelected == 'camelCase') {
+                const removeUnderscores = textAreaValue.replaceAll('_', ' ');
 
                 const uppercaseFirstLetters = removeUnderscores.replace(/^(.)|\s+(.)/g, c => c.toUpperCase());
 
                 const lowerFirstLetter = uppercaseFirstLetters.charAt(0).toLowerCase() + uppercaseFirstLetters.slice(1);
 
-                document.getElementById('camel-case').value = lowerFirstLetter.replaceAll(' ', '');
-
-                let textareaValue = document.getElementById('camel-case');
-                textareaValue.select();
-                document.execCommand('copy');
-
-                return;
+                document.getElementById('textareaValue').value = lowerFirstLetter.replaceAll(' ', '');
             }
 
-            const toSnakeCase = textAreaCamelCaseValue.replace(/([A-Z])/g, ' $1').trim().toLowerCase().replaceAll(' ', '_');
+            if (optionSelected == 'snake_case') {
+                const toSnakeCase = textAreaValue.replace(/([A-Z])/g, ' $1').trim().toLowerCase().replaceAll(' ', '_');
 
-            document.getElementById('snake-case').value = toSnakeCase;
+                document.getElementById('textareaValue').value = toSnakeCase;
+            }
 
-            let textareaValue = document.getElementById('snake-case');
+            let textareaValue = document.getElementById('textareaValue');
             textareaValue.select();
             document.execCommand('copy');
+
+            document.getElementById('copyMessage').innerHTML = 'The text is already copied in your clipboard'
+        }
+
+        function changeText() {
+            document.getElementById('copyMessage').innerHTML = '';
+            document.getElementById('caseTitle').innerHTML = document.getElementById('dropbox').value;
         }
     </script>
 </body>
