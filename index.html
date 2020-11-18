@@ -7,12 +7,9 @@
     <title>Case Style Converter</title>
 
     <style>
-        /* div {
-            /* display: inline-block; */
-        }
-
-        h1 {
-            /* text-align: center; */
+        body {
+            margin-top: 20px;
+            text-align: center;
         }
 
         Textarea {
@@ -20,15 +17,9 @@
             width: 300px;
         }
 
-        p {
-            display: inline-block;
-        }
-
         .button-div {
-            align-content: center;
+            margin-top: 20px;
         }
-
-        */
     </style>
 </head>
 
@@ -38,6 +29,8 @@
             <option value="">Chose a case style</option>
             <option value="camelCase">Camel Case</option>
             <option value="snake_case">Snake Case</option>
+            <option value="kebab-case">Kebab Case</option>
+            <option value="PascalCase">Pascal Case</option>
         </select>
         <div>
             <h1 id="caseTitle"></h1>
@@ -56,19 +49,30 @@
             const textAreaValue = document.getElementById('textareaValue').value;
 
             if (optionSelected == '') return;
+            if (!textAreaValue) return;
 
-            if (optionSelected == 'camelCase') {
-                const removeUnderscores = textAreaValue.replaceAll('_', ' ');
+            if (optionSelected == 'camelCase' || optionSelected == 'PascalCase') {
+                let removeUnderscores = textAreaValue
+                    .replaceAll('_', ' ')
+                    .replace(/^(.)|\s+(.)/g, c =>
+                        c.toUpperCase())
+                    .replaceAll(' ', '')
 
-                const uppercaseFirstLetters = removeUnderscores.replace(/^(.)|\s+(.)/g, c => c.toUpperCase());
+                if (optionSelected == 'camelCase') {
+                    removeUnderscores = removeUnderscores.charAt(0).toLowerCase() + removeUnderscores.slice(1);
+                }
 
-                const lowerFirstLetter = uppercaseFirstLetters.charAt(0).toLowerCase() + uppercaseFirstLetters.slice(1);
-
-                document.getElementById('textareaValue').value = lowerFirstLetter.replaceAll(' ', '');
+                document.getElementById('textareaValue').value = removeUnderscores;
             }
 
             if (optionSelected == 'snake_case') {
                 const toSnakeCase = textAreaValue.replace(/([A-Z])/g, ' $1').trim().toLowerCase().replaceAll(' ', '_');
+
+                document.getElementById('textareaValue').value = toSnakeCase;
+            }
+
+            if (optionSelected == 'kebab-case') {
+                const toSnakeCase = textAreaValue.replace(/([A-Z])/g, ' $1').trim().toLowerCase().replaceAll(' ', '-');
 
                 document.getElementById('textareaValue').value = toSnakeCase;
             }
