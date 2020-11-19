@@ -24,6 +24,7 @@
 </head>
 
 <body>
+    <h1 class="title">Case Style Converter</h1>
     <div>
         <select name="case" id="dropbox" onChange="changeText()">
             <option value="">Chose a case style</option>
@@ -54,8 +55,8 @@
             if (optionSelected == 'camelCase' || optionSelected == 'PascalCase') {
                 let removeUnderscores = textAreaValue
                     .replaceAll('_', ' ')
-                    .replace(/^(.)|\s+(.)/g, c =>
-                        c.toUpperCase())
+                    .replaceAll('-', ' ')
+                    .replace(/^(.)|\s+(.)/g, c => c.toUpperCase())
                     .replaceAll(' ', '')
 
                 if (optionSelected == 'camelCase') {
@@ -66,13 +67,23 @@
             }
 
             if (optionSelected == 'snake_case') {
-                const toSnakeCase = textAreaValue.replace(/([A-Z])/g, ' $1').trim().toLowerCase().replaceAll(' ', '_');
+                const toSnakeCase = textAreaValue
+                    .replace(/([A-Z])/g, ' $1')
+                    .trim()
+                    .toLowerCase()
+                    .replaceAll(' ', '_')
+                    .replaceAll('-', '_');
 
                 document.getElementById('textareaValue').value = toSnakeCase;
             }
 
             if (optionSelected == 'kebab-case') {
-                const toSnakeCase = textAreaValue.replace(/([A-Z])/g, ' $1').trim().toLowerCase().replaceAll(' ', '-');
+                const toSnakeCase = textAreaValue
+                    .replace(/([A-Z])/g, ' $1')
+                    .trim()
+                    .toLowerCase()
+                    .replaceAll(' ', '-')
+                    .replaceAll('_', '-');
 
                 document.getElementById('textareaValue').value = toSnakeCase;
             }
