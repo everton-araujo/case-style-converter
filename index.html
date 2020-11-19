@@ -26,13 +26,6 @@
 <body>
     <h1 class="title">Case Style Converter</h1>
     <div>
-        <select name="case" id="dropbox" onChange="changeText()">
-            <option value="">Chose a case style</option>
-            <option value="camelCase">Camel Case</option>
-            <option value="snake_case">Snake Case</option>
-            <option value="kebab-case">Kebab Case</option>
-            <option value="PascalCase">Pascal Case</option>
-        </select>
         <div>
             <h1 id="caseTitle"></h1>
             <p id="copyMessage"></p>
@@ -40,64 +33,97 @@
         <Textarea id="textareaValue"></Textarea>
     </div>
 
-    <div class="button-div">
-        <button onClick="getTextAreaValue()">Convert</button>
+    <div>
+        <button id="camel" onClick="toCamelOrPascalCase(this.id)">camelCaseConverter</button>
+        <button onClick="toSnakeCase()">snake_case_converter</button>
+        <button onClick="toKebabCase()">kebab-case-converter</button>
+        <button id="pascal" onClick="toCamelOrPascalCase(this.id)">PascalCaseConverter</button>
+    </div>
+    <div>
+        <button class="upperCase" onClick="toUpperCase()">TO UPPER CASE</button>
+        <button class="lowerCase" onClick="toLowerCase()">to lower case</button>
     </div>
 
     <script>
-        function getTextAreaValue() {
-            const optionSelected = document.getElementById('dropbox').value;
+        function toCamelOrPascalCase(id) {
             const textAreaValue = document.getElementById('textareaValue').value;
 
-            if (optionSelected == '') return;
             if (!textAreaValue) return;
 
-            if (optionSelected == 'camelCase' || optionSelected == 'PascalCase') {
-                let removeUnderscores = textAreaValue
-                    .replaceAll('_', ' ')
-                    .replaceAll('-', ' ')
-                    .replace(/^(.)|\s+(.)/g, c => c.toUpperCase())
-                    .replaceAll(' ', '')
+            let removeUnderscores = textAreaValue
+                .replaceAll('_', ' ')
+                .replaceAll('-', ' ')
+                .replace(/^(.)|\s+(.)/g, c => c.toUpperCase())
+                .replaceAll(' ', '');
 
-                if (optionSelected == 'camelCase') {
-                    removeUnderscores = removeUnderscores.charAt(0).toLowerCase() + removeUnderscores.slice(1);
-                }
-
-                document.getElementById('textareaValue').value = removeUnderscores;
+            if (id == 'camel') {
+                removeUnderscores = removeUnderscores.charAt(0).toLowerCase() + removeUnderscores.slice(1);
+                isCamel = '';
             }
 
-            if (optionSelected == 'snake_case') {
-                const toSnakeCase = textAreaValue
-                    .replace(/([A-Z])/g, ' $1')
-                    .trim()
-                    .toLowerCase()
-                    .replaceAll(' ', '_')
-                    .replaceAll('-', '_');
+            document.getElementById('textareaValue').value = removeUnderscores;
 
-                document.getElementById('textareaValue').value = toSnakeCase;
-            }
+            copy();
+        }
 
-            if (optionSelected == 'kebab-case') {
-                const toSnakeCase = textAreaValue
-                    .replace(/([A-Z])/g, ' $1')
-                    .trim()
-                    .toLowerCase()
-                    .replaceAll(' ', '-')
-                    .replaceAll('_', '-');
+        function toSnakeCase() {
+            const textAreaValue = document.getElementById('textareaValue').value;
 
-                document.getElementById('textareaValue').value = toSnakeCase;
-            }
+            if (!textAreaValue) return;
 
+            const toSnakeCase = textAreaValue
+                .replace(/([A-Z])/g, ' $1')
+                .trim()
+                .toLowerCase()
+                .replaceAll(/\s+/g, '_')
+                .replaceAll(/\-+/g, '_');
+
+            document.getElementById('textareaValue').value = toSnakeCase;
+
+            copy();
+        }
+
+        function toKebabCase() {
+            const textAreaValue = document.getElementById('textareaValue').value;
+
+            if (!textAreaValue) return;
+
+            const toSnakeCase = textAreaValue
+                .replace(/([A-Z])/g, ' $1')
+                .trim()
+                .toLowerCase()
+                .replaceAll(/\s+/g, '-')
+                .replaceAll(/\_+/g, '-');
+
+            document.getElementById('textareaValue').value = toSnakeCase;
+
+            copy();
+        }
+
+        function toUpperCase() {
+            const textAreaValue = document.getElementById('textareaValue').value;
+
+            if (!textAreaValue) return;
+
+            document.getElementById('textareaValue').value = textAreaValue.toUpperCase();
+            document.getElementById('copyMessage').innerHTML = '';
+        }
+
+        function toLowerCase() {
+            const textAreaValue = document.getElementById('textareaValue').value;
+
+            if (!textAreaValue) return;
+
+            document.getElementById('textareaValue').value = textAreaValue.toLowerCase();
+            document.getElementById('copyMessage').innerHTML = '';
+        }
+
+        function copy() {
             let textareaValue = document.getElementById('textareaValue');
             textareaValue.select();
             document.execCommand('copy');
 
-            document.getElementById('copyMessage').innerHTML = 'The text is already copied in your clipboard'
-        }
-
-        function changeText() {
-            document.getElementById('copyMessage').innerHTML = '';
-            document.getElementById('caseTitle').innerHTML = document.getElementById('dropbox').value;
+            document.getElementById('copyMessage').innerHTML = 'The text is copied to your clipboard'
         }
     </script>
 </body>
