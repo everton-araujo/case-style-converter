@@ -10,6 +10,7 @@
         body {
             margin-top: 20px;
             text-align: center;
+            background-color: #F6F6F6;
         }
 
         Textarea {
@@ -17,8 +18,21 @@
             width: 300px;
         }
 
-        .button-div {
-            margin-top: 20px;
+        .buttonsDiv {
+            display: flex;
+            justify-content: center;
+        }
+
+        h1 {
+            font-size: 40px;
+        }
+
+        button {
+            margin: 20px 5px 0 5px;
+            width: 200px;
+            height: 30px;
+            font-weight: bold;
+            background-color: #F0FEFF;
         }
     </style>
 </head>
@@ -33,13 +47,14 @@
         <Textarea id="textareaValue"></Textarea>
     </div>
 
-    <div>
+    <div class="buttonsDiv">
         <button id="camel" onClick="toCamelOrPascalCase(this.id)">camelCaseConverter</button>
         <button onClick="toSnakeCase()">snake_case_converter</button>
         <button onClick="toKebabCase()">kebab-case-converter</button>
         <button id="pascal" onClick="toCamelOrPascalCase(this.id)">PascalCaseConverter</button>
     </div>
-    <div>
+
+    <div class="buttonsDiv">
         <button class="upperCase" onClick="toUpperCase()">TO UPPER CASE</button>
         <button class="lowerCase" onClick="toLowerCase()">to lower case</button>
     </div>
@@ -123,7 +138,7 @@
             textareaValue.select();
             document.execCommand('copy');
 
-            document.getElementById('copyMessage').innerHTML = 'The text is copied to your clipboard'
+            document.getElementById('copyMessage').innerHTML = 'Text is copied to your clipboard'
         }
     </script>
 </body>
